@@ -48,7 +48,6 @@ class AuthController extends Controller
          $user->name=$request->name;
          $user->email=$request->email;
          $user->password=$request->password;
-         $user->role_id=2;
          $user->save();
 
          $token = $user->createToken('Token Name')->accessToken;

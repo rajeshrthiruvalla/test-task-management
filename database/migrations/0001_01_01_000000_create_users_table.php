@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->foreignId('role_id')->constrained();
+            $table->boolean('is_admin')->default(false);
             $table->boolean('status')->default(true);
         });
 
