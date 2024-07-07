@@ -46,4 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function scopeActive($qry)  {
+        $qry->where('status',true);
+    }
+
+    public function UserRoles()
+    {
+        return $this->hasMany(UserRole::class);
+    }
 }
