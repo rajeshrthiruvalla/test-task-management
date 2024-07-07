@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User as UserResource;
@@ -13,9 +14,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
+        $users=User::paginate(5);
+        $users->appends(['filter' => $request->filter]);
+        return UserResource::collection($users);
     }
 
     /**

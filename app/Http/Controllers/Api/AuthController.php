@@ -38,7 +38,8 @@ class AuthController extends Controller
             'name' =>'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'c_password'=>'required|same:password'
+            'c_password'=>'required|same:password',
+            'dob'=>'required|date_format:Y-m-d'
         ]);
         if ($validator->fails()) {
             return response()->json(["status"=>false,
@@ -48,6 +49,7 @@ class AuthController extends Controller
          $user->name=$request->name;
          $user->email=$request->email;
          $user->password=$request->password;
+         $user->dob=$request->dob;
          $user->save();
 
          $token = $user->createToken('Token Name')->accessToken;

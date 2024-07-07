@@ -12,8 +12,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(User::whereHas('Roles',function($qry){
-            return $qry->where('name','user_module');
+        if(User::whereHas('UserRoles',function($qry){
+            return $qry->whereHas('Role',function($qry){
+              return $qry->where('name','user_module');
+            });
           })->find(auth()->id()))
           {
               return true;
@@ -31,7 +33,8 @@ class UpdateUserRequest extends FormRequest
         return [
             "email"=>'required|email|unique:users,email,'.$this->user->id,
             "name"=>'required',
-            "password"=>'required'
+            "password"=>'required',
+            'dob'=>'required|date_format:Y-m-d'
         ];
     }
 }
