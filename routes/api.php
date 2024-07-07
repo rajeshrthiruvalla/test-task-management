@@ -17,4 +17,5 @@ Route::middleware(['auth:api'])->group(function () {
         'tasks' => TaskController::class,
     ]);
     Route::post('/assign-role', [UserRoleController::class, 'assignRoles']);
+    Route::post('/task-status', [TaskController::class, 'updateStatus']);
 });

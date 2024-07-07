@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -11,7 +12,15 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if(User::whereHas('UserRoles',function($qry){
+            return $qry->whereHas('Role',function($qry){
+              return $qry->where('name','task_module');
+            });
+          })->find(auth()->id()))
+          {
+              return true;
+          }
+          return false;
     }
 
     /**
@@ -22,7 +31,7 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>"required"
         ];
     }
 }
