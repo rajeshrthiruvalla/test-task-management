@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    protected $appends = ['tasks'];
     /**
      * The attributes that are mass assignable.
      *
@@ -53,5 +54,22 @@ class User extends Authenticatable
     public function UserRoles()
     {
         return $this->hasMany(UserRole::class);
+    }
+    public function Tasks()
+    {
+       return $this->hasMany(Task::class);
+    }
+    public function Roles()
+    {
+        return $this->hasManyThrough(Role::class,
+                                     UserRole::class,
+                                    'user_id',
+                                     'id',
+                                    'id',
+                                     'id');
+    }
+    protected function getTasksAttribute()
+    {
+        return $this->with('Tasks');
     }
 }

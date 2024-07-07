@@ -14,8 +14,8 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
        Role::insert([
-        ["id"=>1,"name"=>"Accountant"],
-        ["id"=>2,"name"=>"Staff"]
+        ["id"=>1,"name"=>"user_module"],
+        ["id"=>2,"name"=>"task_module"]
       ]);
     }
 }

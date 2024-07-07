@@ -4,10 +4,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\LogMiddleWare;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TaskController;
 
 
 Route::post('/login',[AuthController::class,'login'])->middleware(LogMiddleWare::class);
 Route::post('/register',[AuthController::class,'register']);
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout',[AuthController::class,'logout'])->middleware(LogMiddleWare::class);
+    Route::apiResources([
+        'users' => UserController::class,
+        'tasks' => TaskController::class,
+    ]);
 });
