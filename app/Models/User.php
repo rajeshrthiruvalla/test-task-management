@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin'
+        'dob'
     ];
 
     /**
@@ -45,6 +45,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'dob'=>'datetime:jS F Y'
         ];
     }
     public function scopeActive($qry)  {
@@ -59,17 +60,15 @@ class User extends Authenticatable
     {
        return $this->hasMany(Task::class);
     }
-    public function Roles()
-    {
-        return $this->hasManyThrough(Role::class,
-                                     UserRole::class,
-                                    'user_id',
-                                     'id',
-                                    'id',
-                                     'id');
-    }
     protected function getTasksAttribute()
     {
-        return $this->with('Tasks');
+        return $this->Tasks()->get();
+    }
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
+        );
     }
 }

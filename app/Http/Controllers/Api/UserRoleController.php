@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserRole;
@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 
 class UserRoleController extends Controller
 {
-    public function index()
-    {
-        $users=User::active()->where('is_admin',false)->get();
-        $roles=Role::all();
-        $user_with_roles=User::whereHas('UserRoles')->active()->where('is_admin',false)->get();
-       return view('user_role',compact('users','roles','user_with_roles'));
-    }
     public function assignRoles(Request $request)
     {
         $validated = $request->validate([
@@ -35,6 +28,7 @@ class UserRoleController extends Controller
             $user_roles[]=["role_id"=>$role_id];
         }
         $user->UserRoles()->createMany($user_roles);
-        return back()->with('success', 'Inserted Successfully');
+        return response()->json(["status"=>true,
+        "message"=>"Assigned successfully"]);
     }
 }

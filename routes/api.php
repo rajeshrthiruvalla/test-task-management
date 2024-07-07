@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\LogMiddleWare;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TaskController;
-
+use App\Http\Controllers\Api\UserRoleController;
 
 Route::post('/login',[AuthController::class,'login'])->middleware(LogMiddleWare::class);
 Route::post('/register',[AuthController::class,'register']);
@@ -16,4 +16,5 @@ Route::middleware(['auth:api'])->group(function () {
         'users' => UserController::class,
         'tasks' => TaskController::class,
     ]);
+    Route::post('/assign-role', [UserRoleController::class, 'assignRoles']);
 });
